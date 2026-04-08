@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+        :root { --bg-dark: #0f172a; --glass-bg: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); --neon-blue: #00f2ff; --neon-green: #00ff9d; }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg-dark); color: white; display: flex; height: 100vh; overflow: hidden; }
+        
+        .sidebar { width: 250px; padding: 30px; border-right: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); display: flex; flex-direction: column; }
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        
+        .admin-row { display: flex; align-items: center; justify-content: space-between; background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 15px; border-radius: 12px; margin-bottom: 15px; transition: 0.3s; }
+        .admin-row:hover { border-color: var(--neon-blue); transform: translateX(5px); }
+        
+        .row-thumb { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 20px; background: #333; }
+        .row-info { flex: 1; }
+        .row-title { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .row-sub { font-size: 12px; color: #94a3b8; }
+        
+        .btn-icon { width: 35px; height: 35px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: 10px; transition: 0.2s; }
+        .btn-icon:hover { transform: scale(1.1); }
+        .check { background: rgba(0, 255, 157, 0.15); color: var(--neon-green); }
+        .cross { background: rgba(255, 0, 85, 0.15); color: #ff0055; }
+        
+        h2 { margin-bottom: 25px; border-left: 4px solid var(--neon-blue); padding-left: 15px; font-weight: 600; }
+        .logout-btn { margin-top: auto; color: #ff0055; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h3 style="color:var(--neon-blue); margin-bottom:10px;">ADMIN PANEL</h3>
+        <div style="opacity:0.6; font-size:12px; margin-bottom: 40px;">Super User Access</div>
+        
+        <div class="logout-btn" onclick="localStorage.clear(); window.location.href='auth.html'">
+            <i class="fa-solid fa-right-from-bracket"></i> Logout
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2>Pending Approvals</h2>
+        <div id="pendingAdsList">
+            <div style="padding:20px; text-align:center; color:#666;">Loading data...</div>
+        </div>
+
+        <h2 style="margin-top: 50px; border-color: #ff0055;">Active Reports</h2>
+        <div id="reportsList">
+            <div style="padding:20px; color:#666; font-size:13px;">No active reports found.</div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+    <script type="module">
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+        
+        // Security Check
+        const pin = localStorage.getItem("user_pin");
+        if(!pin) window.location.href = "auth.html";
+        
+        // Load Data
+        window.onload = function() {
+            if(window.loadAdminData) window.loadAdminData();
+        };
+    </script>
+</body>
+</html>
